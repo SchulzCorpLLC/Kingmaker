@@ -1,10 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',
+  // Remove static export so SSR and API routes work
+  // output: 'export', 
+
   eslint: {
     ignoreDuringBuilds: true,
   },
-  images: { unoptimized: true },
+
+  images: {
+    unoptimized: true,
+  },
+
+  webpack: (config) => {
+    config.ignoreWarnings = config.ignoreWarnings || [];
+    config.ignoreWarnings.push({ module: /@supabase\/realtime-js/ });
+    return config;
+  },
 };
 
 module.exports = nextConfig;
